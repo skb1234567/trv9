@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>????? ?????? ????????</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            direction: rtl; /* Right-to-left layout for Urdu */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Ensure tables are responsive */
+        .table-container {
+            max-height: 300px; /* Adjust as needed */
+            overflow-y: auto;
+        }
+        th, td {
+            text-align: right; /* Align text to the right for Urdu */
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+         /* Style for Required Fields */
+        .required-label::after {
+            content: " *";
+            color: red;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div id="login-section" class="container mx-auto max-w-md mt-20 p-8 bg-white rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-6 text-center text-blue-600">??? ?? ????</h1>
+        <form id="login-form">
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 mb-2 required-label">???? ???</label>
+                <input type="text" id="username" name="username" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 mb-2 required-label">??? ???</label>
+                <input type="password" id="password" name="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200">??? ??</button>
+            <p id="login-error" class="text-red-500 text-sm mt-4 text-center"></p>
+        </form>
+    </div>
+
+    <div id="dashboard-section" class="container mx-auto p-4 md:p-8 bg-gray-50 rounded-lg shadow-md mt-5 hidden">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <h1 class="text-3xl font-bold text-gray-800">????? ?????? ??? ????</h1>
+            <div>
+                 <span id="welcome-user" class="text-lg mr-4">??? ?????, <span class="font-semibold"></span>!</span>
+                <button id="logout-button" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200">??? ???</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-4 rounded-lg shadow text-center">
+                <h3 class="text-gray-600 mb-1">?? ??????????</h3>
+                <p id="total-transactions" class="text-2xl font-bold text-blue-600">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow text-center">
+                <h3 class="text-gray-600 mb-1">?? ?????</h3>
+                <p id="total-profit" class="text-2xl font-bold text-green-600">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow text-center">
+                <h3 class="text-gray-600 mb-1">?? ?? ?????</h3>
+                <p id="today-profit" class="text-2xl font-bold text-green-500">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow text-center">
+                <h3 class="text-gray-600 mb-1">????? ????????</h3>
+                <p id="credit-outstanding" class="text-2xl font-bold text-red-600">0</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700 border-b pb-2">??? ????????? ???? ????</h2>
+            <form id="transaction-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                    <label for="customer-name" class="block text-sm font-medium text-gray-700 mb-1 required-label">????? ?? ???</label>
+                    <input type="text" id="customer-name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">??? ????</label>
+                    <input type="tel" id="phone" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="pnr" class="block text-sm font-medium text-gray-700 mb-1">PNR</label>
+                    <input type="text" id="pnr" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1 required-label">??? (Amount)</label>
+                    <input type="number" id="amount" step="0.01" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label for="cash-received" class="block text-sm font-medium text-gray-700 mb-1 required-label">???? ??? ??? (Cash Received)</label>
+                    <input type="number" id="cash-received" step="0.01" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500" required>
+                </div>
+                 <div>
+                    <label for="profit" class="block text-sm font-medium text-gray-700 mb-1 required-label">????? (Profit)</label>
+                    <input type="number" id="profit" step="0.01" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label for="transaction-type" class="block text-sm font-medium text-gray-700 mb-1 required-label">????????? ?? ???</label>
+                    <select id="transaction-type" class="w-full px-3 py-2 border rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-blue-500" required>
+                        <option value="Receipt">???? (Receipt)</option>
+                        <option value="Payment">??????? (Payment)</option>
+                        <option value="Credit">????? (Credit)</option>
+                    </select>
+                </div>
+                 <div class="md:col-span-2 lg:col-span-3 flex justify-end mt-4">
+                     <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-200">????????? ???? ????</button>
+                 </div>
+            </form>
+        </div>
+
+         <div class="mb-6">
+            <label for="search-transactions" class="block text-sm font-medium text-gray-700 mb-1">?????????? ???? ???? (???? ???? PNR)</label>
+            <input type="text" id="search-transactions" placeholder="???? ???? ????..." class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-3 text-green-700">?????? (Receipts)</h3>
+                <div class="table-container">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                            <tr>
+                                <th>?????</th>
+                                <th>?????</th>
+                                <th>???</th>
+                                <th>???? ???</th>
+                                <th>?????</th>
+                                <th>PNR</th>
+                                <th>???</th>
+                                <th class="admin-only">????</th>
+                                <th class="admin-only">???</th>
+                            </tr>
+                        </thead>
+                        <tbody id="receipts-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-3 text-red-700">????????? (Payments)</h3>
+                 <div class="table-container">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                           <tr>
+                                <th>?????</th>
+                                <th>?????</th>
+                                <th>???</th>
+                                <th>???? ???</th>
+                                <th>?????</th>
+                                <th>PNR</th>
+                                <th>???</th>
+                                <th class="admin-only">????</th>
+                                <th class="admin-only">???</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payments-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-3 text-yellow-700">????? (Credits)</h3>
+                 <div class="table-container">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                           <tr>
+                                <th>?????</th>
+                                <th>?????</th>
+                                <th>???</th>
+                                <th>???? ???</th>
+                                <th>?????</th>
+                                <th>?????</th>
+                                <th>PNR</th>
+                                <th>???</th>
+                                <th class="admin-only">????</th>
+                                <th class="admin-only">???</th>
+                            </tr>
+                        </thead>
+                        <tbody id="credits-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="company-payments-section" class="bg-white p-6 rounded-lg shadow mb-8 admin-only hidden">
+            <h2 class="text-xl font-semibold mb-4 text-indigo-700 border-b pb-2">????? ?? ?????????</h2>
+            <form id="company-payment-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div>
+                    <label for="company-user" class="block text-sm font-medium text-gray-700 mb-1 required-label">?? ???? ?? ??? ??</label>
+                     <select id="company-user" class="w-full px-3 py-2 border rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500" required>
+                        </select>
+                </div>
+                <div>
+                    <label for="company-name" class="block text-sm font-medium text-gray-700 mb-1 required-label">????? ?? ???</label>
+                    <input type="text" id="company-name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500" required>
+                </div>
+                <div>
+                    <label for="invoice" class="block text-sm font-medium text-gray-700 mb-1">?????? ????</label>
+                    <input type="text" id="invoice" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label for="company-amount" class="block text-sm font-medium text-gray-700 mb-1 required-label">???</label>
+                    <input type="number" id="company-amount" step="0.01" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500" required>
+                </div>
+                <div class="md:col-span-2 lg:col-span-4 flex justify-end mt-2">
+                    <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">??????? ???? ????</button>
+                </div>
+            </form>
+
+            <h3 class="text-lg font-semibold mb-3 text-indigo-700">????? ????????? ?? ??????</h3>
+             <div class="table-container">
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr>
+                            <th>?????</th>
+                            <th>????</th>
+                            <th>?????</th>
+                            <th>??????</th>
+                            <th>???</th>
+                            <th>???</th>
+                        </tr>
+                    </thead>
+                    <tbody id="company-payments-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="confirmation-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+            <h3 class="text-lg font-bold mb-4">?????</h3>
+            <p id="modal-message" class="mb-6">??? ?? ????? ?? ???? ?? ??? ???? ????? ????</p>
+            <div class="flex justify-end space-x-4 space-x-reverse">
+                <button id="confirm-delete-button" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">???? ??? ????</button>
+                <button id="cancel-delete-button" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400">?????</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Elements ---
+            const loginSection = document.getElementById('login-section');
+            const dashboardSection = document.getElementById('dashboard-section');
+            const loginForm = document.getElementById('login-form');
+            const loginError = document.getElementById('login-error');
+            const logoutButton = document.getElementById('logout-button');
+            const welcomeUserSpan = document.getElementById('welcome-user').querySelector('span');
+
+            const transactionForm = document.getElementById('transaction-form');
+            const receiptsTableBody = document.getElementById('receipts-table-body');
+            const paymentsTableBody = document.getElementById('payments-table-body');
+            const creditsTableBody = document.getElementById('credits-table-body');
+            const searchInput = document.getElementById('search-transactions');
+
+            const totalTransactionsSpan = document.getElementById('total-transactions');
+            const totalProfitSpan = document.getElementById('total-profit');
+            const todayProfitSpan = document.getElementById('today-profit');
+            const creditOutstandingSpan = document.getElementById('credit-outstanding');
+
+            const companyPaymentsSection = document.getElementById('company-payments-section');
+            const companyPaymentForm = document.getElementById('company-payment-form');
+            const companyPaymentsTableBody = document.getElementById('company-payments-table-body');
+            const companyUserSelect = document.getElementById('company-user');
+
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const modalMessage = document.getElementById('modal-message');
+            const confirmDeleteButton = document.getElementById('confirm-delete-button');
+            const cancelDeleteButton = document.getElementById('cancel-delete-button');
+
+            // --- State ---
+            let currentUser = null; // { username: '...', role: '...' }
+            let transactions = []; // Array to hold all transactions
+            let companyPayments = []; // Array for company payments
+            let itemToDelete = null; // { type: 'transaction'/'company', id: ... }
+
+            // --- Users Data (Replace with more secure method in production) ---
+            const users = [
+                { username: 'admin', password: 'password123', role: 'admin' },
+                { username: 'user1', password: 'password', role: 'user' },
+                { username: 'user2', password: 'pass123', role: 'user' }
+            ];
+
+            // --- Initialization ---
+            loadDataFromLocalStorage();
+            checkLoginStatus();
+            populateUserDropdown();
+
+            // --- Event Listeners ---
+            loginForm.addEventListener('submit', handleLogin);
+            logoutButton.addEventListener('click', handleLogout);
+            transactionForm.addEventListener('submit', handleAddTransaction);
+            searchInput.addEventListener('input', handleSearch);
+
+            if (companyPaymentForm) {
+                companyPaymentForm.addEventListener('submit', handleAddCompanyPayment);
+            }
+
+            // Delete confirmation modal listeners
+            cancelDeleteButton.addEventListener('click', () => {
+                 confirmationModal.classList.add('hidden');
+                 itemToDelete = null;
+            });
+            confirmDeleteButton.addEventListener('click', confirmDeletion);
+
+            // --- Functions ---
+
+            // Load data from localStorage
+            function loadDataFromLocalStorage() {
+                const storedTransactions = localStorage.getItem('transactions');
+                const storedCompanyPayments = localStorage.getItem('companyPayments');
+                transactions = storedTransactions ? JSON.parse(storedTransactions) : [];
+                companyPayments = storedCompanyPayments ? JSON.parse(storedCompanyPayments) : [];
+                console.log("Loaded transactions:", transactions);
+                console.log("Loaded company payments:", companyPayments);
+            }
+
+            // Save data to localStorage
+            function saveDataToLocalStorage() {
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+                localStorage.setItem('companyPayments', JSON.stringify(companyPayments));
+                console.log("Saved transactions:", transactions);
+                 console.log("Saved company payments:", companyPayments);
+            }
+
+            // Check if user is logged in (using localStorage)
+            function checkLoginStatus() {
+                const loggedInUser = localStorage.getItem('currentUser');
+                if (loggedInUser) {
+                    currentUser = JSON.parse(loggedInUser);
+                    showDashboard();
+                } else {
+                    showLogin();
+                }
+            }
+
+            // Handle user login
+            function handleLogin(event) {
+                event.preventDefault();
+                const username = event.target.username.value.trim();
+                const password = event.target.password.value;
+                loginError.textContent = ''; // Clear previous errors
+
+                const foundUser = users.find(user => user.username === username && user.password === password);
+
+                if (foundUser) {
+                    currentUser = { username: foundUser.username, role: foundUser.role };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser)); // Store user session
+                    showDashboard();
+                } else {
+                    loginError.textContent = '??? ???? ??? ?? ??? ????';
+                }
+                loginForm.reset();
+            }
+
+            // Handle user logout
+            function handleLogout() {
+                currentUser = null;
+                localStorage.removeItem('currentUser'); // Clear user session
+                showLogin();
+            }
+
+            // Show login section, hide dashboard
+            function showLogin() {
+                loginSection.classList.remove('hidden');
+                dashboardSection.classList.add('hidden');
+                currentUser = null; // Ensure currentUser is cleared
+            }
+
+            // Show dashboard, hide login section
+            function showDashboard() {
+                if (!currentUser) return; // Should not happen if checkLoginStatus works
+
+                loginSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+                welcomeUserSpan.textContent = currentUser.username;
+
+                // Show/Hide Admin specific elements
+                const adminOnlyElements = document.querySelectorAll('.admin-only');
+                adminOnlyElements.forEach(el => {
+                    if (currentUser.role === 'admin') {
+                        el.classList.remove('hidden');
+                        // Ensure table headers related to admin are visible
+                        if (el.tagName === 'TH' || el.tagName === 'TD') {
+                             el.style.display = ''; // Or 'table-cell' if needed
+                        }
+                    } else {
+                        el.classList.add('hidden');
+                         // Ensure table headers related to admin are hidden
+                         if (el.tagName === 'TH' || el.tagName === 'TD') {
+                             el.style.display = 'none';
+                        }
+                    }
+                });
+
+                // Populate user dropdown if admin
+                 if (currentUser.role === 'admin') {
+                    populateUserDropdown(); // Ensure it's populated when dashboard loads for admin
+                 }
+
+
+                renderAllTables(); // Initial render
+                updateSummary();
+            }
+
+             // Populate user dropdown for company payments (Admin only)
+            function populateUserDropdown() {
+                if (currentUser && currentUser.role === 'admin' && companyUserSelect) {
+                    companyUserSelect.innerHTML = '<option value="" disabled selected>???? ????? ????</option>'; // Default option
+                    users.forEach(user => {
+                         // Only add non-admin users or include admin based on requirements
+                        // if (user.role !== 'admin') { // Example: Exclude admin from paying as company
+                        const option = document.createElement('option');
+                        option.value = user.username;
+                        option.textContent = user.username;
+                        companyUserSelect.appendChild(option);
+                        // }
+                    });
+                }
+             }
+
+
+            // Handle adding a new transaction
+            function handleAddTransaction(event) {
+                event.preventDefault();
+                if (!currentUser) return; // Need to be logged in
+
+                const customerName = document.getElementById('customer-name').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const pnr = document.getElementById('pnr').value.trim();
+                const amount = parseFloat(document.getElementById('amount').value);
+                const cashReceived = parseFloat(document.getElementById('cash-received').value);
+                const profit = parseFloat(document.getElementById('profit').value); // Get profit from input
+                const transactionType = document.getElementById('transaction-type').value;
+
+                // Basic Validation
+                if (!customerName || isNaN(amount) || isNaN(cashReceived) || isNaN(profit) || !transactionType) {
+                    alert('???? ??? ???? ????? (*) ????? ?? ???? ????? ?? ??? ?????');
+                    return;
+                }
+                 if (transactionType === 'Credit' && cashReceived >= amount) {
+                    alert('????? ????????? ?? ???? ???? ??? ??? ?? ??? ?? ?? ???? ??????');
+                    return;
+                }
+                 if (transactionType !== 'Credit' && cashReceived !== amount) {
+                    // For Receipt/Payment, typically cash received equals amount unless it's partial.
+                    // Adjust this logic if partial payments are allowed for Receipt/Payment.
+                    // For now, let's assume they must be equal unless it's Credit.
+                    // Or we can remove this check if Amount represents total value and Cash Received is actual cash flow.
+                    console.warn("Receipt/Payment: Amount and Cash Received differ. Assuming this is intended.");
+                }
+
+
+                const newTransaction = {
+                    id: Date.now().toString(), // Simple unique ID
+                    user: currentUser.username, // Track which user added it
+                    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+                    customerName,
+                    phone,
+                    pnr,
+                    amount,
+                    cashReceived,
+                    profit, // Store the entered profit
+                    type: transactionType,
+                    balance: transactionType === 'Credit' ? amount - cashReceived : 0 // Calculate balance only for credit
+                };
+
+                transactions.push(newTransaction);
+                saveDataToLocalStorage();
+                renderAllTables(); // Re-render tables with the new data
+                updateSummary();
+                transactionForm.reset(); // Clear the form
+            }
+
+            // Handle adding a new company payment (Admin only)
+            function handleAddCompanyPayment(event) {
+                event.preventDefault();
+                if (!currentUser || currentUser.role !== 'admin') return;
+
+                const paidToUser = document.getElementById('company-user').value; // Which user's account this payment relates to
+                const companyName = document.getElementById('company-name').value.trim();
+                const invoice = document.getElementById('invoice').value.trim();
+                const amount = parseFloat(document.getElementById('company-amount').value);
+
+                if (!paidToUser || !companyName || isNaN(amount)) {
+                     alert('???? ??? ???? ????? (*) ????? ?? ???? ????? ?? ??? ?????');
+                    return;
+                }
+
+                const newPayment = {
+                    id: 'cp-' + Date.now().toString(), // Prefix to distinguish from transactions
+                    adminUser: currentUser.username, // Admin who recorded it
+                    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+                    paidToUser, // The user associated with this payment
+                    companyName,
+                    invoice,
+                    amount
+                };
+
+                companyPayments.push(newPayment);
+                saveDataToLocalStorage();
+                renderCompanyPaymentsTable(); // Re-render only this table
+                companyPaymentForm.reset();
+            }
+
+            // Render all transaction tables based on current data and search term
+            function renderAllTables() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredTransactions = transactions.filter(tx => {
+                    const nameMatch = tx.customerName.toLowerCase().includes(searchTerm);
+                    const phoneMatch = tx.phone.toLowerCase().includes(searchTerm);
+                    const pnrMatch = tx.pnr.toLowerCase().includes(searchTerm);
+                    return nameMatch || phoneMatch || pnrMatch;
+                });
+
+                renderTable(receiptsTableBody, filteredTransactions.filter(tx => tx.type === 'Receipt'), 'Receipt');
+                renderTable(paymentsTableBody, filteredTransactions.filter(tx => tx.type === 'Payment'), 'Payment');
+                renderTable(creditsTableBody, filteredTransactions.filter(tx => tx.type === 'Credit'), 'Credit');
+
+                // Render company payments table separately as it's not part of general transaction search
+                renderCompanyPaymentsTable();
+            }
+
+            // Generic function to render a specific table
+            function renderTable(tbody, data, type) {
+                tbody.innerHTML = ''; // Clear existing rows
+
+                if (data.length === 0) {
+                    const row = tbody.insertRow();
+                    const cell = row.insertCell();
+                    // Adjust colspan based on whether admin columns are visible
+                    cell.colSpan = currentUser.role === 'admin' ? (type === 'Credit' ? 10 : 9) : (type === 'Credit' ? 8 : 7);
+                    cell.textContent = '???? ?????? ???? ????';
+                    cell.className = 'text-center text-gray-500 py-4';
+                    return;
+                }
+
+
+                data.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
+
+                data.forEach(item => {
+                    const row = tbody.insertRow();
+                    row.insertCell().textContent = new Date(item.date).toLocaleDateString('ur-PK'); // Format date
+                    row.insertCell().textContent = item.customerName;
+                    row.insertCell().textContent = item.amount.toFixed(2);
+                    row.insertCell().textContent = item.cashReceived.toFixed(2);
+
+                    if (type === 'Credit') {
+                        row.insertCell().textContent = item.balance.toFixed(2); // Balance column for Credit
+                    }
+
+                    row.insertCell().textContent = item.profit.toFixed(2); // Profit column
+                    row.insertCell().textContent = item.pnr || '-';
+                    row.insertCell().textContent = item.phone || '-';
+
+                    // Admin only columns
+                    if (currentUser.role === 'admin') {
+                        row.insertCell().textContent = item.user; // Show user who added
+                        const actionCell = row.insertCell();
+                        const deleteButton = document.createElement('button');
+                        deleteButton.innerHTML = '&times;'; // Cross symbol for delete
+                        deleteButton.className = 'text-red-500 hover:text-red-700 font-bold px-2';
+                        deleteButton.title = '??? ????';
+                        deleteButton.onclick = () => requestDeletion('transaction', item.id);
+                        actionCell.appendChild(deleteButton);
+                        // Add admin-only class to the cells themselves for consistency if needed
+                         row.cells[row.cells.length - 2].classList.add('admin-only');
+                         actionCell.classList.add('admin-only');
+                    }
+                });
+            }
+
+            // Render Company Payments Table (Admin only)
+            function renderCompanyPaymentsTable() {
+                 if (!currentUser || currentUser.role !== 'admin' || !companyPaymentsTableBody) return; // Only for admin
+
+                 companyPaymentsTableBody.innerHTML = ''; // Clear existing rows
+
+                 if (companyPayments.length === 0) {
+                    const row = companyPaymentsTableBody.insertRow();
+                    const cell = row.insertCell();
+                    cell.colSpan = 6; // Adjust colspan
+                    cell.textContent = '???? ????? ??????? ?????? ???? ????';
+                    cell.className = 'text-center text-gray-500 py-4';
+                    return;
+                 }
+
+                 // Sort by date descending
+                 const sortedPayments = [...companyPayments].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                 sortedPayments.forEach(payment => {
+                    const row = companyPaymentsTableBody.insertRow();
+                    row.insertCell().textContent = new Date(payment.date).toLocaleDateString('ur-PK');
+                    row.insertCell().textContent = payment.paidToUser; // User associated
+                    row.insertCell().textContent = payment.companyName;
+                    row.insertCell().textContent = payment.invoice || '-';
+                    row.insertCell().textContent = payment.amount.toFixed(2);
+
+                    // Action cell for delete
+                    const actionCell = row.insertCell();
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerHTML = '&times;';
+                    deleteButton.className = 'text-red-500 hover:text-red-700 font-bold px-2';
+                     deleteButton.title = '??? ????';
+                    deleteButton.onclick = () => requestDeletion('company', payment.id);
+                    actionCell.appendChild(deleteButton);
+                 });
+            }
+
+
+            // Update summary statistics
+            function updateSummary() {
+                let totalProfit = 0;
+                let todayProfit = 0;
+                let creditOutstanding = 0;
+                const todayDate = new Date().toISOString().split('T')[0];
+
+                transactions.forEach(tx => {
+                    // Accumulate total profit from all transaction types
+                    totalProfit += tx.profit || 0;
+
+                    // Accumulate today's profit
+                    if (tx.date === todayDate) {
+                        todayProfit += tx.profit || 0;
+                    }
+
+                    // Calculate outstanding credit balance
+                    if (tx.type === 'Credit') {
+                        creditOutstanding += tx.balance || 0; // Sum of balances for credit transactions
+                    }
+                });
+
+                totalTransactionsSpan.textContent = transactions.length;
+                totalProfitSpan.textContent = totalProfit.toFixed(2);
+                todayProfitSpan.textContent = todayProfit.toFixed(2);
+                creditOutstandingSpan.textContent = creditOutstanding.toFixed(2);
+            }
+
+            // Handle live search input
+            function handleSearch() {
+                renderAllTables(); // Re-render tables based on the new search term
+            }
+
+            // Request deletion confirmation
+            function requestDeletion(type, id) {
+                itemToDelete = { type, id };
+                modalMessage.textContent = `??? ?? ????? ?? ${type === 'transaction' ? '?????????' : '????? ???????'} ?? ??? ???? ????? ????`;
+                confirmationModal.classList.remove('hidden');
+            }
+
+            // Confirm and perform deletion
+            function confirmDeletion() {
+                if (!itemToDelete || !currentUser || currentUser.role !== 'admin') return;
+
+                if (itemToDelete.type === 'transaction') {
+                    transactions = transactions.filter(tx => tx.id !== itemToDelete.id);
+                } else if (itemToDelete.type === 'company') {
+                    companyPayments = companyPayments.filter(cp => cp.id !== itemToDelete.id);
+                }
+
+                saveDataToLocalStorage();
+                renderAllTables(); // Re-render relevant tables
+                updateSummary(); // Update summary after deletion
+
+                // Hide modal and clear state
+                confirmationModal.classList.add('hidden');
+                itemToDelete = null;
+            }
+
+        });
+    </script>
+
+</body>
+</html>
