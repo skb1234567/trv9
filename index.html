@@ -1,804 +1,515 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>WebApp Dashboard</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f6f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 50px;
-    }
-
-    .logo {
-      margin-bottom: 20px;
-    }
-
-    .logo img {
-      width: 150px;
-      height: auto;
-    }
-
-    .buttons {
-      margin-bottom: 30px;
-    }
-
-    .buttons button {
-      padding: 12px 24px;
-      margin: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      border: none;
-      border-radius: 8px;
-      background-color: #007bff;
-      color: white;
-      transition: background 0.3s;
-    }
-
-    .buttons button:hover {
-      background-color: #0056b3;
-    }
-
-    .form-container {
-      width: 100%;
-      max-width: 700px;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    #adminForm, #userForm {
-      display: none;
-    }
-  </style>
-
-  <script>
-    function showForm(formId) {
-      document.getElementById('adminForm').style.display = 'none';
-      document.getElementById('userForm').style.display = 'none';
-      document.getElementById(formId).style.display = 'block';
-    }
-  </script>
-</head>
-<body>
-
-  <div class="logo">
-    <!-- Replace with your logo URL -->
-    <img src="https://via.placeholder.com/150?text=Your+Logo" alt="Logo">
-  </div>
-
-  <div class="buttons">
-    <button onclick="showForm('adminForm')">Admin Login</button>
-    <button onclick="showForm('userForm')">User Login</button>
-  </div>
-
-  <div class="form-container">
-    <div id="adminForm">
-      <<!DOCTYPE html>
-<html>
-<head>
-  <base target="_top">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      padding: 24px;
-      max-width: 480px;
-      margin: 30px auto;
-      background: #f8fafd;
-    }
-    form, .summary, #searchResult, #pinLock {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px #0001;
-      padding: 18px 16px;
-      margin-bottom: 18px;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0 16px 0;
-      border-radius: 6px;
-      border: 1px solid #d0d8e0;
-      font-size: 1em;
-      background: #f6f8fa;
-      transition: border 0.2s;
-    }
-    input:focus, select:focus {
-      border: 1.5px solid #2ecc40;
-      outline: none;
-    }
-    button {
-      padding: 11px 24px;
-      background: linear-gradient(90deg, #2ecc40, #27ae60);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 1em;
-      cursor: pointer;
-      box-shadow: 0 1px 4px #0002;
-      margin-bottom: 8px;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: linear-gradient(90deg, #27ae60, #219150);
-    }
-    .summary {
-      background: #eafaf1;
-      padding: 14px 16px;
-      border-radius: 8px;
-      font-size: 1.05em;
-      box-shadow: 0 2px 8px #0001;
-      border-left: 4px solid #2ecc40;
-    }
-    #reportChart {
-      display: block;
-      margin: 0 auto 18px auto;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 1px 6px #0001;
-      max-width: 250px;
-      height: 120px !important;
-    }
-    h2, h3 {
-      color: #1a4d2e;
-      margin-bottom: 10px;
-    }
-    ul { padding-left: 18px; }
-    li { margin-bottom: 4px; }
-    label {
-      font-weight: 500;
-      color: #2d3a4a;
-    }
-    @media (max-width: 600px) {
-      body { padding: 8px; }
-      form, .summary, #searchResult, #pinLock { padding: 12px 6px; }
-      #reportChart { max-width: 98vw; }
-    }
-  </style>
-</head>
-<body>
-  <div id="pinLock">
-    <h2>Enter PIN to Access</h2>
-    <input type="password" id="pinInput" placeholder="Enter 4-digit PIN" maxlength="4">
-    <button onclick="checkPIN()">Unlock</button>
-    <p id="pinError" style="color:red;"></p>
-  </div>
-
-  <div id="mainContent" style="display:none;">
-    <h2>Travel Agency Ledger</h2>
-    <form id="entryForm">
-      <label>Type</label>
-      <select name="type" required>
-        <option value="">--Select--</option>
-        <option value="Ticket Sale">Ticket Sale</option>
-        <option value="Company Payment">Company Payment</option>
-        <option value="Refund">Refund</option>
-        <option value="Bank Transfer">Bank Transfer</option>
-      </select>
-      <label>Name</label>
-      <input type="text" name="name" required>
-      <label>PNR / Ticket Number</label>
-      <input type="text" name="pnr" required>
-      <label>Amount</label>
-      <input type="number" name="amount" required>
-      <button type="submit">Submit</button>
-    </form>
-
-    <div class="summary" id="summaryBox">
-      <strong>Total Debit:</strong> <span id="totalDebit">0</span><br>
-      <strong>Total Credit:</strong> <span id="totalCredit">0</span><br>
-      <strong>Current Balance:</strong> <span id="balance">0</span>
-    </div>
-
-    <canvas id="reportChart" width="250" height="120"></canvas>
-
-    <h3>Search by Date</h3>
-    <input type="date" id="searchDate">
-    <button onclick="searchByDate()">Search</button>
-    <div id="searchResult"></div>
-  </div>
-
-  <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzrtmV7MfiuCW23-uV5YfhbrBu1lEPFmRlLC_ysO7pl5wczZh6u3GBQFDvo1OaZeEAWIA/exec';
-    let chartInstance = null;
-    const correctPIN = "1234";
-
-    function checkPIN() {
-      const enteredPIN = document.getElementById("pinInput").value;
-      if (enteredPIN === correctPIN) {
-        document.getElementById("pinLock").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-        loadSummary();
-      } else {
-        document.getElementById("pinError").innerText = "Incorrect PIN. Please try again.";
-      }
-    }
-
-    document.getElementById('entryForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
-      const params = new URLSearchParams();
-      formData.forEach((v, k) => params.append(k, v));
-      await fetch(scriptURL, { method: 'POST', body: params });
-      form.reset();
-      loadSummary();
-    });
-
-    async function loadSummary() {
-      const res = await fetch(scriptURL + '?summary=true');
-      const data = await res.json();
-      document.getElementById('totalDebit').innerText = data.debit;
-      document.getElementById('totalCredit').innerText = data.credit;
-      document.getElementById('balance').innerText = data.balance;
-      renderChart(data);
-    }
-
-    function renderChart(data) {
-      const ctx = document.getElementById('reportChart').getContext('2d');
-      if (chartInstance) chartInstance.destroy();
-      chartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Debit', 'Credit', 'Balance'],
-          datasets: [{
-            label: 'Finance Summary',
-            data: [data.debit, data.credit, data.balance],
-            backgroundColor: ['#2ecc40', '#ff5252', '#3498db']
-          }]
-        },
-        options: {
-          responsive: false,
-          plugins: {
-            legend: { display: false }
-          },
-          scales: { y: { beginAtZero: true } }
-        }
-      });
-    }
-
-    async function searchByDate() {
-      const date = document.getElementById('searchDate').value;
-      if (!date) {
-        document.getElementById('searchResult').innerHTML = '<em>Please select a date.</em>';
-        return;
-      }
-      const res = await fetch(scriptURL + '?searchDate=' + date);
-      const rows = await res.json();
-      if (!rows.length) {
-        document.getElementById('searchResult').innerHTML = '<em>No records found for this date.</em>';
-        return;
-      }
-      let html = '<ul>';
-      rows.forEach(r => {
-        html += `<li>${r.Date} - ${r.Type} - ${r.Name} - ${r.Amount} (${r.Balance})</li>`;
-      });
-      html += '</ul>';
-      document.getElementById('searchResult').innerHTML = html;
-    }
-  </script>
-</body>
-</html>>
-    </div>
-
-    <div id="userForm">
-      <<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Travel Agency Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <style>
-    html { scroll-behavior: smooth; }
-    .slideshow-container { position: relative; height: 220px; }
-    .slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s; }
-    .slide.active { opacity: 1; z-index: 1; }
-    .slide img { object-fit: cover; width: 100%; height: 100%; border-radius: .5rem; }
-    .slide-content { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top,rgba(0,0,0,0.7),transparent); color: #fff; padding: 1rem; border-radius: 0 0 .5rem .5rem;}
-    .slideshow-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1rem;}
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: #dee2e6; cursor: pointer; }
-    .dot.active { background: #0d6efd;}
-    .notification { position: fixed; top: 1rem; right: 1rem; z-index: 9999; display: none;}
-    .notification.show { display: flex;}
-    #searchResult th, #searchResult td { white-space: nowrap; }
-    #stickyBar { display: none; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Travel Agency Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8fafd; font-family: 'Segoe UI', Arial, sans-serif; }
+        .slideshow-container { position: relative; height: 220px; }
+        .slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s; }
+        .slide.active { opacity: 1; z-index: 1; }
+        .slide img { object-fit: cover; width: 100%; height: 100%; border-radius: .5rem; }
+        .slide-content { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top,rgba(0,0,0,0.7),transparent); color: #fff; padding: 1rem; border-radius: 0 0 .5rem .5rem;}
+        .slideshow-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1rem;}
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #dee2e6; cursor: pointer; }
+        .dot.active { background: #0d6efd;}
+        .notification { position: fixed; top: 1rem; right: 1rem; z-index: 9999; display: none;}
+        .notification.show { display: flex;}
+        #searchResult th, #searchResult td { white-space: nowrap; }
+        #stickyBar { display: none; }
+
+        /* Ledger Styles */
+        #ledgerSection { max-width: 520px; margin: 20px auto; }
+        #ledgerSection form, #ledgerSection .summary, #ledgerSection #searchResult, #ledgerSection #pinLock {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #0001;
+            padding: 18px 16px;
+            margin-bottom: 18px;
+        }
+        #ledgerSection input, #ledgerSection select {
+            width: 100%; padding: 10px; margin: 8px 0 16px 0; border-radius: 6px;
+            border: 1px solid #d0d8e0; font-size: 1em; background: #f6f8fa; transition: border 0.2s;
+        }
+        #ledgerSection input:focus, #ledgerSection select:focus { border: 1.5px solid #2ecc40; outline: none; }
+        #ledgerSection button {
+            padding: 11px 24px; background: linear-gradient(90deg, #2ecc40, #27ae60); color: white;
+            border: none; border-radius: 6px; font-weight: bold; font-size: 1em; cursor: pointer;
+            box-shadow: 0 1px 4px #0002; margin-bottom: 8px; transition: background 0.2s;
+        }
+        #ledgerSection button:hover { background: linear-gradient(90deg, #27ae60, #219150); }
+        #ledgerSection .summary {
+            background: #eafaf1; padding: 14px 16px; border-radius: 8px; font-size: 1.05em;
+            box-shadow: 0 2px 8px #0001; border-left: 4px solid #2ecc40;
+        }
+        #reportChart {
+            display: block; margin: 0 auto 18px auto; background: #fff; border-radius: 10px;
+            box-shadow: 0 1px 6px #0001; max-width: 250px; height: 120px !important;
+        }
+        #ledgerSection h2, #ledgerSection h3 { color: #1a4d2e; margin-bottom: 10px; }
+        #ledgerSection ul { padding-left: 18px; }
+        #ledgerSection li { margin-bottom: 4px; }
+        #ledgerSection label { font-weight: 500; color: #2d3a4a; }
+    </style>
 </head>
 <body class="bg-light">
 
-  <!-- Sticky Buttons Bar (only visible after login) -->
-  <div id="stickyBar" class="sticky-top bg-white py-2 shadow-sm" style="z-index:1040;">
-    <div class="container d-flex justify-content-end align-items-center gap-2">
-      <!-- Logo left of New Booking -->
-      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgeg5DSBZudBQFokB67zjGkZe4JqLNk15SGbgm1jIf2kAOIkxScnvA7rcDBK2TxXglhlz7jN0h_CtE5a8Uq4IP-VDhihipmOtDSgIzLxxrdbas64WHVYxcQdu1dZhimSHQznNu5LbX4M4cA-xs7Ej9OWfRp9k5sP7rVp5QY8qN_AiXolZfltS3S8kyp-6bL/s1600/1000509451.jpg" alt="Logo" height="38" style="border-radius:6px;">
-      <button onclick="showSection('form')" class="btn btn-success">
-        <i class="fas fa-plus-circle"></i> New Booking
-      </button>
-      <button onclick="showSection('companyPayment')" class="btn btn-warning">
-        <i class="fas fa-building"></i> Company Payment
-      </button>
-      <button onclick="showSection('search')" class="btn btn-secondary">
-        <i class="fas fa-search"></i> Search
-      </button>
-      <!-- Our Team Button -->
-      <button onclick="scrollToTeam()" class="btn btn-info text-white">
-        <i class="fas fa-users"></i> Our Team
-      </button>
-    </div>
-  </div>
-
-  <div class="container py-4">
-    <!-- Login Section -->
-    <div id="loginSection" class="card mx-auto" style="max-width: 600px;">
-      <div class="card-body text-center">
-        <i class="fas fa-plane-departure fa-3x text-primary mb-2"></i>
-        <h2 class="mb-3">Travel Agency Portal</h2>
-        <h5 class="mb-3 text-secondary">Branch Login</h5>
-        <form onsubmit="handleLogin(event)">
-          <div class="mb-3 text-start">
-            <label class="form-label"><i class="fas fa-user"></i> Username</label>
-            <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
-          </div>
-          <div class="mb-3 text-start">
-            <label class="form-label"><i class="fas fa-lock"></i> Password</label>
-            <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Branch Section -->
-    <div id="branchSection" class="d-none">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <i class="fas fa-plane-departure fa-2x text-primary"></i>
-          <span class="fs-4 fw-bold ms-2">Welcome, <span id="branchName"></span></span>
+    <div id="stickyBar" class="sticky-top bg-white py-2 shadow-sm" style="z-index:1040;">
+        <div class="container d-flex justify-content-end align-items-center gap-2">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgeg5DSBZudBQFokB67zjGkZe4JqLNk15SGbgm1jIf2kAOIkxScnvA7rcDBK2TxXglhlz7jN0h_CtE5a8Uq4IP-VDhihipmOtDSgIzLxxrdbas64WHVYxcQdu1dZhimSHQznNu5LbX4M4cA-xs7Ej9OWfRp9k5sP7rVp5QY8qN_AiXolZfltS3S8kyp-6bL/s1600/1000509451.jpg" alt="Logo" height="38" style="border-radius:6px;">
+            <button onclick="showSection('form')" class="btn btn-success"><i class="fas fa-plus-circle"></i> New Booking</button>
+            <button onclick="showSection('companyPayment')" class="btn btn-warning"><i class="fas fa-building"></i> Company Payment</button>
+            <button onclick="showSection('search')" class="btn btn-secondary"><i class="fas fa-search"></i> Search</button>
+            <button onclick="showSection('ledger')" class="btn btn-dark"><i class="fas fa-book"></i> Ledger</button>
+            <button onclick="scrollToTeam()" class="btn btn-info text-white"><i class="fas fa-users"></i> Our Team</button>
         </div>
-      </div>
-      <!-- Slideshow -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-0"><i class="fas fa-images"></i> Featured Travel Packages</h5>
-            <div>
-              <button class="btn btn-outline-primary btn-sm" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
-              <button class="btn btn-outline-primary btn-sm" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="container py-4">
+        <div id="loginSection" class="card mx-auto" style="max-width: 600px;">
+            <div class="card-body text-center">
+                <i class="fas fa-plane-departure fa-3x text-primary mb-2"></i>
+                <h2 class="mb-3">Travel Agency Portal</h2>
+                <h5 class="mb-3 text-secondary">Branch Login</h5>
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-3 text-start"><label class="form-label"><i class="fas fa-user"></i> Username</label><input type="text" id="username" class="form-control" placeholder="Enter your username" required></div>
+                    <div class="mb-3 text-start"><label class="form-label"><i class="fas fa-lock"></i> Password</label><input type="password" id="password" class="form-control" placeholder="Enter your password" required></div>
+                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-sign-in-alt"></i> Login</button>
+                </form>
             </div>
-          </div>
-          <div class="slideshow-container"></div>
-          <div class="slideshow-dots"></div>
         </div>
-      </div>
-    </div>
 
-    <!-- Form Section -->
-    <div id="formSection" class="card d-none mb-4">
-      <div class="card-body">
-        <h4><i class="fas fa-ticket-alt"></i> New Booking Form</h4>
-        <form id="travelForm" onsubmit="handleSubmit(event)">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Customer Name</label>
-              <input type="text" name="customerName" class="form-control" required>
+        <div id="branchSection" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div><i class="fas fa-plane-departure fa-2x text-primary"></i><span class="fs-4 fw-bold ms-2">Welcome, <span id="branchName"></span></span></div>
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Mobile Number</label>
-              <input type="text" name="mobileNumber" class="form-control" required>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="mb-0"><i class="fas fa-images"></i> Featured Travel Packages</h5>
+                        <div><button class="btn btn-outline-primary btn-sm" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button><button class="btn btn-outline-primary btn-sm" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button></div>
+                    </div>
+                    <div class="slideshow-container"></div>
+                    <div class="slideshow-dots"></div>
+                </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">PNR Number</label>
-              <input type="text" name="pnr" class="form-control" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Trip Type</label>
-              <select name="tripType" class="form-select" required>
-                <option value="">Select trip type</option>
-                <option value="One Way">One Way</option>
-                <option value="Return">Return</option>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Travel Date</label>
-              <input type="date" name="travelDate" class="form-control" required>
-            </div>
-          </div>
-          <h5 class="mt-3">Financial Details</h5>
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Cost Price (SAR)</label>
-              <input type="number" id="costPrice" name="costPrice" class="form-control" oninput="calculateProfit()" required>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Cash Taken (SAR)</label>
-              <input type="number" id="cashTaken" name="cashTaken" class="form-control" oninput="calculateProfit();calculateBalance()" required>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Profit (SAR)</label>
-              <input type="number" id="profit" name="profit" class="form-control" readonly>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Received Cash (SAR)</label>
-              <input type="number" id="receivedCash" name="receivedCash" class="form-control" oninput="calculateBalance()" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Balance (SAR)</label>
-              <input type="number" id="balance" name="balance" class="form-control" readonly>
-            </div>
-            <input type="hidden" name="branch">
-          </div>
-          <button type="submit" class="btn btn-success" id="submitBtn"><i class="fas fa-paper-plane"></i> Submit Booking</button>
-        </form>
-        <div id="whatsappButtonContainer" class="mt-3 d-none">
-          <a id="whatsappLink" target="_blank" class="btn btn-success"><i class="fab fa-whatsapp"></i> Send Booking Details via WhatsApp</a>
         </div>
-      </div>
-    </div>
 
-    <!-- Company Payment Section -->
-    <div id="companyPaymentSection" class="card d-none mb-4">
-      <div class="card-body">
-        <h4><i class="fas fa-building"></i> Company Payment</h4>
-        <form id="companyPaymentForm" onsubmit="handleCompanyPaymentSubmit(event)">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Date</label>
-              <input type="date" name="date" class="form-control" required>
+        <div id="formSection" class="card d-none mb-4">
+            <div class="card-body">
+                <h4><i class="fas fa-ticket-alt"></i> New Booking Form</h4>
+                <form id="travelForm" onsubmit="handleSubmit(event)">
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label class="form-label">Customer Name</label><input type="text" name="customerName" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Mobile Number</label><input type="text" name="mobileNumber" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">PNR Number</label><input type="text" name="pnr" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Trip Type</label><select name="tripType" class="form-select" required><option value="">Select trip type</option><option value="One Way">One Way</option><option value="Return">Return</option></select></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Travel Date</label><input type="date" name="travelDate" class="form-control" required></div>
+                    </div>
+                    <h5 class="mt-3">Financial Details</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3"><label class="form-label">Cost Price (SAR)</label><input type="number" id="costPrice" name="costPrice" class="form-control" oninput="calculateProfit()" required></div>
+                        <div class="col-md-4 mb-3"><label class="form-label">Cash Taken (SAR)</label><input type="number" id="cashTaken" name="cashTaken" class="form-control" oninput="calculateProfit();calculateBalance()" required></div>
+                        <div class="col-md-4 mb-3"><label class="form-label">Profit (SAR)</label><input type="number" id="profit" name="profit" class="form-control" readonly></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Received Cash (SAR)</label><input type="number" id="receivedCash" name="receivedCash" class="form-control" oninput="calculateBalance()" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Balance (SAR)</label><input type="number" id="balance" name="balance" class="form-control" readonly></div>
+                        <input type="hidden" name="branch">
+                    </div>
+                    <button type="submit" class="btn btn-success" id="submitBtn"><i class="fas fa-paper-plane"></i> Submit Booking</button>
+                </form>
+                <div id="whatsappButtonContainer" class="mt-3 d-none"><a id="whatsappLink" target="_blank" class="btn btn-success"><i class="fab fa-whatsapp"></i> Send Booking Details via WhatsApp</a></div>
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Invoice Number</label>
-              <input type="text" name="invoiceNumber" class="form-control" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Company Name</label>
-              <input type="text" name="companyName" class="form-control" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Payment Method</label>
-              <select name="paymentMethod" class="form-select" required>
-                <option value="">Select method</option>
-                <option value="Cash">Cash</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-                <option value="Cheque">Cheque</option>
-                <option value="Credit Card">Credit Card</option>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Total Sale (SAR)</label>
-              <input type="number" id="totalSale" name="totalSale" class="form-control" oninput="calculateCompanyBalance()" required>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Cash Paid (SAR)</label>
-              <input type="number" id="cashPaid" name="cashPaid" class="form-control" oninput="calculateCompanyBalance()" required>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Balance (SAR)</label>
-              <input type="number" id="companyBalance" name="balance" class="form-control" readonly>
-            </div>
-            <input type="hidden" name="branch">
-          </div>
-          <button type="submit" class="btn btn-warning" id="companyPaymentBtn"><i class="fas fa-save"></i> Submit Payment</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Search Section -->
-    <div id="searchSection" class="card d-none mb-4">
-      <div class="card-body">
-        <h4><i class="fas fa-search"></i> Search Records</h4>
-        <form onsubmit="event.preventDefault(); searchRecord();">
-          <div class="input-group mb-3">
-            <input type="text" id="searchQuery" class="form-control" placeholder="Enter mobile number or PNR" required>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
-          </div>
-        </form>
-        <div id="searchResult"></div>
-      </div>
-    </div>
-
-    <!-- Our Team Section -->
-    <div id="ourTeamSection" class="card mb-4">
-      <div class="card-body">
-        <h4 class="text-center mb-4"><i class="fas fa-users"></i> Our Team</h4>
-        <div class="row justify-content-center">
-          <div class="col-6 col-md-3 text-center mb-3">
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrxQS6QXhoh9CHDUuPgy35evmqeQqY8Ic_N1kXrV4Brugl1gzu09TKc9yOWUZqmqfLggYsFIIjPppg1JZ-9mLdFxXRuJHzUtnMYtRor2AH9QJfM6l3keU5-KEJIrDIqVKRLXLju4Qr2ywkg3HRNjo5e7krErnaRYaf8o5cQ9bO1HKq0dDxiA9W0cCzLIPk/s1600/0.jpg" class="rounded-circle border border-primary mb-2" width="80" height="80" alt="Muhammad Shahzad">
-            <div class="fw-bold text-primary">Muhammad Shahzad</div>
-            <div class="text-secondary">Branch Manager</div>
-          </div>
-          <div class="col-6 col-md-3 text-center mb-3">
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjE8yWHYxdGzZL5DzD-RAJAxC3-e9t_TRZgMsaZqf7REeyzPie_M98afbfgOU_C58ZoXdzHUbFPO2G9xEHc2_Fzmdr0pYCoqNw9FNE6CMPMZ27nO_SO3fxRGV1VHzhBpnL2loDSQhNHDndgskDxXQDrkAu8DWQcx9UXAXbuqzwRFr2i1G4vcf18-glZ2Fja/s1600/0.jpg" class="rounded-circle border border-primary mb-2" width="80" height="80" alt="Muhammad Madni">
-            <div class="fw-bold text-primary">Muhammad Madni</div>
-            <div class="text-secondary">Travel Consultant</div>
-          </div>
-          <div class="col-6 col-md-3 text-center mb-3">
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSPNi0lFejl2WRTyElDX8HglNhEriWiHq6yqKBeV6QjMl3t6wpwcRoU43de4juteWDuyeU3ON-WuGJDLbUJXTIhT6RbGRrRxKU_ts32b81aPJC0sWpKBF5rkuYUOpfRCdXVMTIWfCRvIexW-YNbUQZUpajO-iYps9N_JoSDIKFLuI-AJlYC3szQGOLvGOM/s1600/1000533845.jpg" class="rounded-circle border border-primary mb-2" width="80" height="80" alt="Rana Usman">
-            <div class="fw-bold text-primary">Rana Usman</div>
-            <div class="text-secondary">Ticketing Officer</div>
-          </div>
-          <div class="col-6 col-md-3 text-center mb-3">
-            <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle border border-primary mb-2" width="80" height="80" alt="Muhammad Tahir">
-            <div class="fw-bold text-primary">Muhammad Tahir</div>
-            <div class="text-secondary">Visa Specialist</div>
-          </div>
         </div>
-      </div>
+
+        <div id="companyPaymentSection" class="card d-none mb-4">
+            <div class="card-body">
+                <h4><i class="fas fa-building"></i> Company Payment</h4>
+                <form id="companyPaymentForm" onsubmit="handleCompanyPaymentSubmit(event)">
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label class="form-label">Date</label><input type="date" name="date" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Invoice Number</label><input type="text" name="invoiceNumber" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Company Name</label><input type="text" name="companyName" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Payment Method</label><select name="paymentMethod" class="form-select" required><option value="">Select method</option><option value="Cash">Cash</option><option value="Bank Transfer">Bank Transfer</option><option value="Cheque">Cheque</option><option value="Credit Card">Credit Card</option></select></div>
+                        <div class="col-md-4 mb-3"><label class="form-label">Total Sale (SAR)</label><input type="number" id="totalSale" name="totalSale" class="form-control" oninput="calculateCompanyBalance()" required></div>
+                        <div class="col-md-4 mb-3"><label class="form-label">Cash Paid (SAR)</label><input type="number" id="cashPaid" name="cashPaid" class="form-control" oninput="calculateCompanyBalance()" required></div>
+                        <div class="col-md-4 mb-3"><label class="form-label">Balance (SAR)</label><input type="number" id="companyBalance" name="balance" class="form-control" readonly></div>
+                        <input type="hidden" name="branch">
+                    </div>
+                    <button type="submit" class="btn btn-warning" id="companyPaymentBtn"><i class="fas fa-save"></i> Submit Payment</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="searchSection" class="card d-none mb-4">
+            <div class="card-body">
+                <h4><i class="fas fa-search"></i> Search Records</h4>
+                <form onsubmit="event.preventDefault(); searchRecord();">
+                    <div class="input-group mb-3"><input type="text" id="searchQuery" class="form-control" placeholder="Enter mobile number or PNR" required><button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button></div>
+                </form>
+                <div id="searchResult"></div>
+            </div>
+        </div>
+
+        <div id="ledgerSection" class="d-none mb-4">
+            <div id="pinLock">
+                <h2>Enter PIN to Access</h2>
+                <input type="password" id="pinInput" placeholder="Enter 4-digit PIN" maxlength="4">
+                <button onclick="checkPIN()">Unlock</button>
+                <p id="pinError" style="color:red;"></p>
+            </div>
+            <div id="mainContent" style="display:none;">
+                <h2>Travel Agency Ledger</h2>
+                <form id="entryForm">
+                    <label>Type</label>
+                    <select name="type" required>
+                        <option value="">--Select--</option>
+                        <option value="Ticket Sale">Ticket Sale</option>
+                        <option value="Company Payment">Company Payment</option>
+                        <option value="Refund">Refund</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                    <label>Name</label>
+                    <input type="text" name="name" required>
+                    <label>PNR / Ticket Number</label>
+                    <input type="text" name="pnr" required>
+                    <label>Amount</label>
+                    <input type="number" name="amount" required>
+                    <button type="submit">Submit</button>
+                </form>
+                <div class="summary" id="summaryBox">
+                    <strong>Total Debit:</strong> <span id="totalDebit">0</span><br>
+                    <strong>Total Credit:</strong> <span id="totalCredit">0</span><br>
+                    <strong>Current Balance:</strong> <span id="balanceLedger">0</span>
+                </div>
+                <canvas id="reportChart" width="250" height="120"></canvas>
+                <h3>Search by Date</h3>
+                <input type="date" id="searchDate">
+                <button onclick="searchByDate()">Search</button>
+                <div id="searchResultLedger"></div>
+            </div>
+        </div>
+
+        <div id="ourTeamSection" class="card mb-4">
+            <div class="card-body">
+                <h4 class="text-center mb-4"><i class="fas fa-users"></i> Our Team</h4>
+                <div class="row justify-content-center">
+                    <div class="col-6 col-md-3 text-center mb-3"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrxQS6QXhoh9CHDUuPgy35evmqeQqY8Ic_N1kXrV4Brugl1gzu09TKc9yOWUZqmqfLggYsFIIjPppg1JZ-9mLdFxXRuJHzUtnMYtRor2AH9QJfM6l3keU5-KEJIrDIqVKRLXLju4Qr2ywkg3HRNjo5e7krErnaRYaf8o5cQ9bO1HKq0dDxiA9W0cCzLIPk/s1600/0.jpg" class="rounded-circle border border-primary mb-2" width="80" height="80" alt="Muhammad Shahzad"><div class="fw-bold text-primary">Muhammad Shahzad</div><div class="text-secondary">Branch Manager</div></div>
+                    <div class="col-6 col-md-3 text-center mb-3"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjE8yWHYxdGzZL5DzD-RAJAxC3-e9t_TRZgMsaZqf7REeyzPie_M98afbfgOU_C58ZoXdzHUbFPO2G9xEHc2_Fzmdr0pYCoqNw9FNE6CMPMZ27nO_SO3fxRGV1VHzhBpnL2loDSQhNHDndgskDxXQDrkAu8DWQcx9UXAXbuqzwRFr2i1G4vcf18-glZ2Fja/s1600/0.jpg" class="rounded-circle border border-primary mb-2" width="80" height="80" alt="Muhammad Madni"><div class="fw-bold text-primary">Muhammad Madni</div><div class="text-secondary">Travel Consultant</div></div>
+                    <div class="col-6 col-md-3 text-center mb-3"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSPNi0lFejl2WRTyElDX8HglNhEriWiHq6yqKBeV6QjMl3t6wpwcRoU43de4juteWDuyeU3ON-WuGJDLbUJXTIhT6RbGRrRxKU_ts32b81aPJC0sWpKBF5rkuYUOpfRCdXVMTIWfCRvIexW-YNbUQZUpajO-iYps9N_JoSDIKFLuI-AJlYC3szQGOLvGOM/s1600/1000533845.jpg" class="rounded-circle border border-primary mb-2" width="80" height="80" alt="Rana Usman"><div class="fw-bold text-primary">Rana Usman</div><div class="text-secondary">Ticketing Officer</div></div>
+                    <div class="col-6 col-md-3 text-center mb-3"><img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle border border-primary mb-2" width="80" height="80" alt="Muhammad Tahir"><div class="fw-bold text-primary">Muhammad Tahir</div><div class="text-secondary">Visa Specialist</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="notification" class="alert alert-success notification align-items-center" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <span id="notificationMessage">Success!</span>
+        </div>
     </div>
 
-    <!-- Notification -->
-    <div id="notification" class="alert alert-success notification align-items-center" role="alert">
-      <i class="fas fa-check-circle me-2"></i>
-      <span id="notificationMessage">Success!</span>
-    </div>
-  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // URLs
+        const bookingScriptURL = "https://script.google.com/macros/s/AKfycbx1OULfRXdLoAux8EEVXQF9xXhM83dnG6sSwkxjbsYqXoqhZmBN_NFoV4F5hu87zzPP/exec";
+        const paymentScriptURL = "https://script.google.com/macros/s/AKfycbyq-ZAoXOCAKz3JJAVJHDJzFUjmX0-r1x-i6UxEBn8o0zvLP2c1p_ugKsQuRp_XRGg/exec";
+        const ledgerScriptURL = 'https://script.google.com/macros/s/AKfycbzrtmV7MfiuCW23-uV5YfhbrBu1lEPFmRlLC_ysO7pl5wczZh6u3GBQFDvo1OaZeEAWIA/exec';
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // URLs
-    const bookingScriptURL = "https://script.google.com/macros/s/AKfycbx1OULfRXdLoAux8EEVXQF9xXhM83dnG6sSwkxjbsYqXoqhZmBN_NFoV4F5hu87zzPP/exec";
-    const paymentScriptURL = "https://script.google.com/macros/s/AKfycbyq-ZAoXOCAKz3JJAVJHDJzFUjmX0-r1x-i6UxEBn8o0zvLP2c1p_ugKsQuRp_XRGg/exec";
-    const branchData = {
-      "Muhammad Shahzad": { password: "1234", branchName: "Muhammad Shahzad" },
-      "Muhammad Madni": { password: "5678", branchName: "Muhammad Madni" },
-      "Rana Usman": { password: "91011", branchName: "Rana Usman" },
-      "Muhammad Tahir": { password: "1213", branchName: "Muhammad Tahir" }
-    };
-    const slideshowData = [
-      { imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg0sBJA4oEVoJSk4rEi7p9xsl1VkVzCGJdfIzfpftT49XhVLpqREr-KBCBVBWCBS9Sa5eG1QVoKHqORHb7ZdgvF7ixCVnYl-1Nyua_g9FghuzIBthV5t5HCwVVEOz3wzOoGjFIkPtlatPNeCoLYx3-n3Ut6i6VDZWxcQ5gs-zT9X4w1u5oiHj8iJHwnCiwR/s1600/mail.google%20%282%29.jpg", title: "Umra Visa", description: "85-Days", price: "Soon" },
-      { imageUrl: "https://images.unsplash.com/photo-1503917988258-f87a78e3c995?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80", title: "Magical Istanbul", description: "7-day cultural tour including Hagia Sophia and Bosphorus cruise", price: "3,500" },
-      { imageUrl: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80", title: "Maldives Paradise", description: "Romantic overwater bungalow getaway with snorkeling and spa", price: "5,000" },
-      { imageUrl: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80", title: "London Explorer", description: "6-day city tour with visits to Buckingham Palace and West End show", price: "4,000" }
-    ];
-    let currentBranch = "";
-    let isLoading = false;
-    let currentSlide = 0;
-    let slideInterval;
+        const branchData = {
+            "Muhammad Shahzad": { password: "1234", branchName: "Muhammad Shahzad" },
+            "Muhammad Madni": { password: "5678", branchName: "Muhammad Madni" },
+            "Rana Usman": { password: "91011", branchName: "Rana Usman" },
+            "Muhammad Tahir": { password: "1213", branchName: "Muhammad Tahir" }
+        };
+        const slideshowData = [
+            { imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg0sBJA4oEVoJSk4rEi7p9xsl1VkVzCGJdfIzfpftT49XhVLpqREr-KBCBVBWCBS9Sa5eG1QVoKHqORHb7ZdgvF7ixCVnYl-1Nyua_g9FghuzIBthV5t5HCwVVEOz3wzOoGjFIkPtlatPNeCoLYx3-n3Ut6i6VDZWxcQ5gs-zT9X4w1u5oiHj8iJHwnCiwR/s1600/mail.google%20%282%29.jpg", title: "Umra Visa", description: "85-Days", price: "Soon" },
+            { imageUrl: "https://images.unsplash.com/photo-1503917988258-f87a78e3c995?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80", title: "Magical Istanbul", description: "7-day cultural tour including Hagia Sophia and Bosphorus cruise", price: "3,500" },
+            { imageUrl: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80", title: "Maldives Paradise", description: "Romantic overwater bungalow getaway with snorkeling and spa", price: "5,000" },
+            { imageUrl: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80", title: "London Explorer", description: "6-day city tour with visits to Buckingham Palace and West End show", price: "4,000" }
+        ];
+        let currentBranch = "";
+        let isLoading = false;
+        let currentSlide = 0;
+        let slideInterval;
 
-    function handleLogin(event) {
-      event.preventDefault();
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
-      if (branchData[username] && branchData[username].password === password) {
-        currentBranch = branchData[username].branchName;
-        document.getElementById("branchName").innerText = currentBranch;
-        document.querySelector('input[name="branch"]').value = currentBranch;
-        document.querySelector('#companyPaymentForm input[name="branch"]').value = currentBranch;
-        document.getElementById("loginSection").classList.add("d-none");
-        document.getElementById("branchSection").classList.remove("d-none");
-        document.getElementById("formSection").classList.remove("d-none");
-        // Show sticky bar
-        document.getElementById("stickyBar").style.display = "block";
-        initSlideshow();
-        showNotification("Login successful! Welcome " + currentBranch);
-      } else {
-        showNotification("Incorrect username or password", true);
-      }
-    }
-    function calculateProfit() {
-      const costPrice = parseFloat(document.getElementById("costPrice").value) || 0;
-      const cashTaken = parseFloat(document.getElementById("cashTaken").value) || 0;
-      document.getElementById("profit").value = (cashTaken - costPrice).toFixed(2);
-    }
-    function calculateBalance() {
-      const receivedCash = parseFloat(document.getElementById("receivedCash").value) || 0;
-      const cashTaken = parseFloat(document.getElementById("cashTaken").value) || 0;
-      document.getElementById("balance").value = (receivedCash - cashTaken).toFixed(2);
-    }
-    function calculateCompanyBalance() {
-      const totalSale = parseFloat(document.getElementById("totalSale").value) || 0;
-      const cashPaid = parseFloat(document.getElementById("cashPaid").value) || 0;
-      document.getElementById("companyBalance").value = (totalSale - cashPaid).toFixed(2);
-    }
-    function handleSubmit(event) {
-      event.preventDefault();
-      if (isLoading) return;
-      const form = document.getElementById("travelForm");
-      const formData = new FormData(form);
-      const submitBtn = document.getElementById("submitBtn");
-      formData.set("branch", currentBranch);
-      const mobileNumberRaw = formData.get("mobileNumber").replace(/\D/g, '');
-      const customerName = formData.get("customerName");
-      const message = `? *Your Booking Has Been Confirmed* ?
+        // Main Portal Functions
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            if (branchData[username] && branchData[username].password === password) {
+                currentBranch = branchData[username].branchName;
+                document.getElementById("branchName").innerText = currentBranch;
+                document.querySelector('input[name="branch"]').value = currentBranch;
+                document.querySelector('#companyPaymentForm input[name="branch"]').value = currentBranch;
+                document.getElementById("loginSection").classList.add("d-none");
+                document.getElementById("ourTeamSection").classList.add("d-none");
+                document.getElementById("branchSection").classList.remove("d-none");
+                document.getElementById("formSection").classList.remove("d-none");
+                document.getElementById("stickyBar").style.display = "block";
+                initSlideshow();
+                showNotification("Login successful! Welcome " + currentBranch);
+            } else {
+                showNotification("Incorrect username or password", true);
+            }
+        }
+        function calculateProfit() {
+            const costPrice = parseFloat(document.getElementById("costPrice").value) || 0;
+            const cashTaken = parseFloat(document.getElementById("cashTaken").value) || 0;
+            document.getElementById("profit").value = (cashTaken - costPrice).toFixed(2);
+        }
+        function calculateBalance() {
+            const receivedCash = parseFloat(document.getElementById("receivedCash").value) || 0;
+            const cashTaken = parseFloat(document.getElementById("cashTaken").value) || 0;
+            document.getElementById("balance").value = (receivedCash - cashTaken).toFixed(2);
+        }
+        function calculateCompanyBalance() {
+            const totalSale = parseFloat(document.getElementById("totalSale").value) || 0;
+            const cashPaid = parseFloat(document.getElementById("cashPaid").value) || 0;
+            document.getElementById("companyBalance").value = (totalSale - cashPaid).toFixed(2);
+        }
+        function handleSubmit(event) {
+            event.preventDefault();
+            if (isLoading) return;
+            const form = document.getElementById("travelForm");
+            const formData = new FormData(form);
+            const submitBtn = document.getElementById("submitBtn");
+            formData.set("branch", currentBranch);
+            const mobileNumberRaw = formData.get("mobileNumber").replace(/\D/g, '');
+            const customerName = formData.get("customerName");
+            const message = `? *Your Booking Has Been Confirmed* ?\n\n?? *Customer Name:* ${customerName}\n?? *Mobile Number:* ${mobileNumberRaw}\n?? *PNR:* ${formData.get("pnr")}\n?? *Trip Type:* ${formData.get("tripType")}\n?? *Travel Date:* ${formData.get("travelDate")}\n\n?? *Financial Details:*\n- Cost Price: SAR ${formData.get("costPrice")}\n- Cash Taken: SAR ${formData.get("cashTaken")}\n- Profit: SAR ${formData.get("profit")}\n- Received Cash: SAR ${formData.get("receivedCash")}\n- Balance: SAR ${formData.get("balance")}\n\n?? *Branch:* ${currentBranch}\n\nThank you for choosing us! Safe travels! ??`;
+            const countryCode = mobileNumberRaw.startsWith("05") ? "966" : "92";
+            const fullMobile = `${countryCode}${mobileNumberRaw.substring(mobileNumberRaw.startsWith("0") ? 1 : 0)}`;
+            document.getElementById("whatsappLink").href = `https://wa.me/${fullMobile}?text=${encodeURIComponent(message)}`;
+            document.getElementById("whatsappButtonContainer").classList.remove("d-none");
+            isLoading = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
+            submitBtn.disabled = true;
+            fetch(bookingScriptURL, { method: "POST", body: formData })
+                .then(res => res.text()).then(data => {
+                    showNotification("Booking submitted successfully!");
+                    form.reset();
+                    window.scrollTo(0, document.body.scrollHeight);
+                }).catch(err => {
+                    showNotification("Error submitting booking", true);
+                    console.error(err);
+                }).finally(() => {
+                    isLoading = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Booking';
+                    submitBtn.disabled = false;
+                });
+        }
+        function handleCompanyPaymentSubmit(event) {
+            event.preventDefault();
+            if (isLoading) return;
+            const form = document.getElementById("companyPaymentForm");
+            const formData = new FormData(form);
+            const submitBtn = document.getElementById("companyPaymentBtn");
+            formData.set("branch", currentBranch);
+            isLoading = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
+            submitBtn.disabled = true;
+            fetch(paymentScriptURL, { method: "POST", body: formData })
+                .then(res => res.text()).then(data => {
+                    showNotification("Company payment submitted successfully!");
+                    form.reset();
+                    const today = new Date().toISOString().split('T')[0];
+                    document.querySelector('#companyPaymentForm input[name="date"]').value = today;
+                }).catch(err => {
+                    showNotification("Error submitting company payment", true);
+                    console.error(err);
+                }).finally(() => {
+                    isLoading = false;
+                    submitBtn.innerHTML = '<i class="fas fa-save"></i> Submit Payment';
+                    submitBtn.disabled = false;
+                });
+        }
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById("notification");
+            const notificationMessage = document.getElementById("notificationMessage");
+            notificationMessage.textContent = message;
+            notification.className = isError ? "alert alert-danger notification show align-items-center" : "alert alert-success notification show align-items-center";
+            setTimeout(() => { notification.classList.remove("show"); }, 4000);
+        }
+        function showSection(section) {
+            document.getElementById("branchSection").classList.toggle("d-none", section === "ledger");
+            document.getElementById("formSection").classList.toggle("d-none", section !== "form");
+            document.getElementById("companyPaymentSection").classList.toggle("d-none", section !== "companyPayment");
+            document.getElementById("searchSection").classList.toggle("d-none", section !== "search");
+            document.getElementById("ledgerSection").classList.toggle("d-none", section !== "ledger");
 
-?? *Customer Name:* ${customerName}
-?? *Mobile Number:* ${mobileNumberRaw}
-?? *PNR:* ${formData.get("pnr")}
-?? *Trip Type:* ${formData.get("tripType")}
-?? *Travel Date:* ${formData.get("travelDate")}
-
-?? *Financial Details:*
-- Cost Price: SAR ${formData.get("costPrice")}
-- Cash Taken: SAR ${formData.get("cashTaken")}
-- Profit: SAR ${formData.get("profit")}
-- Received Cash: SAR ${formData.get("receivedCash")}
-- Balance: SAR ${formData.get("balance")}
-
-?? *Branch:* ${currentBranch}
-
-Thank you for choosing us! Safe travels! ??`;
-      const countryCode = mobileNumberRaw.startsWith("05") ? "966" : "92";
-      const fullMobile = `${countryCode}${mobileNumberRaw.substring(mobileNumberRaw.startsWith("0") ? 1 : 0)}`;
-      document.getElementById("whatsappLink").href = `https://wa.me/${fullMobile}?text=${encodeURIComponent(message)}`;
-      document.getElementById("whatsappButtonContainer").classList.remove("d-none");
-      isLoading = true;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
-      submitBtn.disabled = true;
-      fetch(bookingScriptURL, { method: "POST", body: formData })
-        .then(res => res.text())
-        .then(data => {
-          showNotification("Booking submitted successfully!");
-          form.reset();
-          window.scrollTo(0, document.body.scrollHeight);
-        })
-        .catch(err => {
-          showNotification("Error submitting booking", true);
-          console.error(err);
-        })
-        .finally(() => {
-          isLoading = false;
-          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Booking';
-          submitBtn.disabled = false;
+            clearInterval(slideInterval);
+            if (section === "search") {
+                document.getElementById("searchQuery").focus();
+            } else if (section === "companyPayment") {
+                const today = new Date().toISOString().split('T')[0];
+                document.querySelector('#companyPaymentForm input[name="date"]').value = today;
+            } else if (section !== "ledger") {
+                startSlideInterval();
+            }
+        }
+        function searchRecord() {
+            const query = document.getElementById("searchQuery").value.trim();
+            if (!query) return;
+            const searchResult = document.getElementById("searchResult");
+            searchResult.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Searching...</p>';
+            fetch(`${bookingScriptURL}?search=${encodeURIComponent(query)}&branch=${encodeURIComponent(currentBranch)}`)
+                .then(res => res.json()).then(data => {
+                    if (data.length === 0) {
+                        searchResult.innerHTML = "<p>No records found matching your search.</p>";
+                        return;
+                    }
+                    const headers = Object.keys(data[0]);
+                    let html = `<div class="table-responsive"><table class="table table-bordered table-striped"><thead><tr>${headers.map(header => `<th>${header.replace(/([A-Z])/g, ' $1').replace(/\s+/g, ' ').trim()}</th>`).join('')}</tr></thead><tbody>${data.map(record => `<tr>${headers.map(header => `<td>${record[header] || '-'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+                    searchResult.innerHTML = html;
+                }).catch(err => {
+                    showNotification("Search failed", true);
+                    console.error(err);
+                    searchResult.innerHTML = "<p>Error loading search results. Please try again.</p>";
+                });
+        }
+        function initSlideshow() {
+            const slideshowContainer = document.querySelector('.slideshow-container');
+            const dotsContainer = document.querySelector('.slideshow-dots');
+            slideshowContainer.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            slideshowData.forEach((slide, index) => {
+                const slideElement = document.createElement('div');
+                slideElement.className = `slide ${index === 0 ? 'active' : ''}`;
+                slideElement.innerHTML = `<img src="${slide.imageUrl}" alt="${slide.title}"><div class="slide-content"><div class="fs-5 fw-bold">${slide.title}</div><div>${slide.description}</div><div class="fw-bold mt-2">SAR ${slide.price}</div></div>`;
+                slideshowContainer.appendChild(slideElement);
+                const dot = document.createElement('div');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+            currentSlide = 0;
+            startSlideInterval();
+        }
+        function startSlideInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+        function nextSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            startSlideInterval();
+        }
+        function prevSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            startSlideInterval();
+        }
+        function goToSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            startSlideInterval();
+        }
+        function scrollToTeam() {
+            document.getElementById('ourTeamSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementsByName("travelDate")[0].value = today;
+            document.getElementsByName("travelDate")[0].min = today;
+            document.querySelector('#companyPaymentForm input[name="date"]').value = today;
         });
-    }
-    function handleCompanyPaymentSubmit(event) {
-      event.preventDefault();
-      if (isLoading) return;
-      const form = document.getElementById("companyPaymentForm");
-      const formData = new FormData(form);
-      const submitBtn = document.getElementById("companyPaymentBtn");
-      formData.set("branch", currentBranch);
-      isLoading = true;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
-      submitBtn.disabled = true;
-      fetch(paymentScriptURL, { method: "POST", body: formData })
-        .then(res => res.text())
-        .then(data => {
-          showNotification("Company payment submitted successfully!");
-          form.reset();
-          const today = new Date().toISOString().split('T')[0];
-          document.querySelector('#companyPaymentForm input[name="date"]').value = today;
-        })
-        .catch(err => {
-          showNotification("Error submitting company payment", true);
-          console.error(err);
-        })
-        .finally(() => {
-          isLoading = false;
-          submitBtn.innerHTML = '<i class="fas fa-save"></i> Submit Payment';
-          submitBtn.disabled = false;
-        });
-    }
-    function showNotification(message, isError = false) {
-      const notification = document.getElementById("notification");
-      const notificationMessage = document.getElementById("notificationMessage");
-      notificationMessage.textContent = message;
-      notification.className = isError ? "alert alert-danger notification show align-items-center" : "alert alert-success notification show align-items-center";
-      setTimeout(() => { notification.classList.remove("show"); }, 4000);
-    }
-    function showSection(section) {
-      document.getElementById("formSection").classList.toggle("d-none", section !== "form");
-      document.getElementById("companyPaymentSection").classList.toggle("d-none", section !== "companyPayment");
-      document.getElementById("searchSection").classList.toggle("d-none", section !== "search");
-      if (section === "search") {
-        document.getElementById("searchQuery").focus();
-        clearInterval(slideInterval);
-      } else if (section === "form") {
-        clearInterval(slideInterval);
-      } else if (section === "companyPayment") {
-        clearInterval(slideInterval);
-        const today = new Date().toISOString().split('T')[0];
-        document.querySelector('#companyPaymentForm input[name="date"]').value = today;
-      } else {
-        startSlideInterval();
-      }
-    }
-    function searchRecord() {
-      const query = document.getElementById("searchQuery").value.trim();
-      if (!query) return;
-      const searchResult = document.getElementById("searchResult");
-      searchResult.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Searching...</p>';
-      fetch(`${bookingScriptURL}?search=${encodeURIComponent(query)}&branch=${encodeURIComponent(currentBranch)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.length === 0) {
-            searchResult.innerHTML = "<p>No records found matching your search.</p>";
-            return;
-          }
-          const headers = Object.keys(data[0]);
-          let html = `<div class="table-responsive"><table class="table table-bordered table-striped"><thead><tr>${headers.map(header => `<th>${header.replace(/([A-Z])/g, ' $1').replace(/\s+/g, ' ').trim()}</th>`).join('')}</tr></thead><tbody>${data.map(record => `<tr>${headers.map(header => `<td>${record[header] || '-'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-          searchResult.innerHTML = html;
-        })
-        .catch(err => {
-          showNotification("Search failed", true);
-          console.error(err);
-          searchResult.innerHTML = "<p>Error loading search results. Please try again.</p>";
-        });
-    }
-    // Slideshow functions
-    function initSlideshow() {
-      const slideshowContainer = document.querySelector('.slideshow-container');
-      const dotsContainer = document.querySelector('.slideshow-dots');
-      slideshowContainer.innerHTML = '';
-      dotsContainer.innerHTML = '';
-      slideshowData.forEach((slide, index) => {
-        const slideElement = document.createElement('div');
-        slideElement.className = `slide ${index === 0 ? 'active' : ''}`;
-        slideElement.innerHTML = `<img src="${slide.imageUrl}" alt="${slide.title}"><div class="slide-content"><div class="fs-5 fw-bold">${slide.title}</div><div>${slide.description}</div><div class="fw-bold mt-2">SAR ${slide.price}</div></div>`;
-        slideshowContainer.appendChild(slideElement);
-        const dot = document.createElement('div');
-        dot.className = `dot ${index === 0 ? 'active' : ''}`;
-        dot.onclick = () => goToSlide(index);
-        dotsContainer.appendChild(dot);
-      });
-      currentSlide = 0;
-      startSlideInterval();
-    }
-    function startSlideInterval() {
-      clearInterval(slideInterval);
-      slideInterval = setInterval(nextSlide, 5000);
-    }
-    function nextSlide() {
-      const slides = document.querySelectorAll('.slide');
-      const dots = document.querySelectorAll('.dot');
-      slides[currentSlide].classList.remove('active');
-      dots[currentSlide].classList.remove('active');
-      currentSlide = (currentSlide + 1) % slides.length;
-      slides[currentSlide].classList.add('active');
-      dots[currentSlide].classList.add('active');
-      startSlideInterval();
-    }
-    function prevSlide() {
-      const slides = document.querySelectorAll('.slide');
-      const dots = document.querySelectorAll('.dot');
-      slides[currentSlide].classList.remove('active');
-      dots[currentSlide].classList.remove('active');
-      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-      slides[currentSlide].classList.add('active');
-      dots[currentSlide].classList.add('active');
-      startSlideInterval();
-    }
-    function goToSlide(index) {
-      const slides = document.querySelectorAll('.slide');
-      const dots = document.querySelectorAll('.dot');
-      slides[currentSlide].classList.remove('active');
-      dots[currentSlide].classList.remove('active');
-      currentSlide = index;
-      slides[currentSlide].classList.add('active');
-      dots[currentSlide].classList.add('active');
-      startSlideInterval();
-    }
-    // Scroll to Our Team Section
-    function scrollToTeam() {
-      const teamSection = document.getElementById('ourTeamSection');
-      if(teamSection) {
-        teamSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-    document.addEventListener("DOMContentLoaded", function() {
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementsByName("travelDate")[0].value = today;
-      document.getElementsByName("travelDate")[0].min = today;
-      document.querySelector('#companyPaymentForm input[name="date"]').value = today;
-    });
-  </script>
-</body>
-</html>
->
-    </div>
-  </div>
 
+        // Ledger Functions
+        let chartInstance = null;
+        const correctPIN = "1234";
+
+        function checkPIN() {
+            const enteredPIN = document.getElementById("pinInput").value;
+            if (enteredPIN === correctPIN) {
+                document.getElementById("pinLock").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+                loadSummary();
+            } else {
+                document.getElementById("pinError").innerText = "Incorrect PIN. Please try again.";
+            }
+        }
+
+        document.getElementById('entryForm').addEventListener('submit', async(e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const params = new URLSearchParams();
+            formData.forEach((v, k) => params.append(k, v));
+            await fetch(ledgerScriptURL, { method: 'POST', body: params });
+            form.reset();
+            loadSummary();
+        });
+
+        async function loadSummary() {
+            const res = await fetch(ledgerScriptURL + '?summary=true');
+            const data = await res.json();
+            document.getElementById('totalDebit').innerText = data.debit;
+            document.getElementById('totalCredit').innerText = data.credit;
+            document.getElementById('balanceLedger').innerText = data.balance;
+            renderChart(data);
+        }
+
+        function renderChart(data) {
+            const ctx = document.getElementById('reportChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Debit', 'Credit', 'Balance'],
+                    datasets: [{
+                        label: 'Finance Summary',
+                        data: [data.debit, data.credit, data.balance],
+                        backgroundColor: ['#2ecc40', '#ff5252', '#3498db']
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        async function searchByDate() {
+            const date = document.getElementById('searchDate').value;
+            const resultDiv = document.getElementById('searchResultLedger');
+            if (!date) {
+                resultDiv.innerHTML = '<em>Please select a date.</em>';
+                return;
+            }
+            const res = await fetch(ledgerScriptURL + '?searchDate=' + date);
+            const rows = await res.json();
+            if (!rows.length) {
+                resultDiv.innerHTML = '<em>No records found for this date.</em>';
+                return;
+            }
+            let html = '<ul>';
+            rows.forEach(r => {
+                html += `<li>${r.Date} - ${r.Type} - ${r.Name} - ${r.Amount} (${r.Balance})</li>`;
+            });
+            html += '</ul>';
+            resultDiv.innerHTML = html;
+        }
+    </script>
 </body>
 </html>
